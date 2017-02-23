@@ -1,0 +1,668 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 preserve8                    ; Indicate the code
+                                                             here preserve
+    2 00000000         ; 8 byte stack alignment
+    3 00000000                 area             |.text|, code, readonly ; Start
+                                                             of CODE area
+    4 00000000                 export           __main
+    5 00000000                 entry
+    6 00000000         
+    7 00000000         ; Set up symbols with base register and offsets
+    8 00000000 00000000 
+                       dir     equ              0x00
+    9 00000000 00000010 
+                       mask    equ              0x10
+   10 00000000 00000014 
+                       pin     equ              0x14
+   11 00000000 00000018 
+                       set     equ              0x18
+   12 00000000 0000001C 
+                       clr     equ              0x1c
+   13 00000000         
+   14 00000000         ; To calcluate the bit address, use
+   15 00000000         ; (preipheral register address offset from base)*32 + bi
+                       t number *4
+   16 00000000         ; 
+   17 00000000         ; P1 is at 20098020
+   18 00000000         ; bit addressing starts at 22000000
+   19 00000000         ; direction register bit 13 at 0x2200000 + 0x98020*32 + 
+                       13*4
+   20 00000000 00098000 
+                       p0offset
+                               equ              0x98000
+   21 00000000 00098020 
+                       p1offset
+                               equ              0x98020
+   22 00000000 00098040 
+                       p2offset
+                               equ              0x98040
+   23 00000000         
+   24 00000000 00000012 
+                       led1bit equ              18
+   25 00000000 23300448 
+                       led1dir equ              0x22000000 + (p1offset+dir)*32 
++ led1bit*4
+   26 00000000 233006C8 
+                       led1pin equ              0x22000000 + (p1offset+pin)*32 
++ led1bit*4
+   27 00000000 23300748 
+                       led1set equ              0x22000000 + (p1offset+set)*32 
++ led1bit*4
+   28 00000000 233007C8 
+                       led1clr equ              0x22000000 + (p1offset+clr)*32 
++ led1bit*4
+   29 00000000         
+   30 00000000 0000000D 
+                       led2bit equ              13
+   31 00000000 23300034 
+                       led2dir equ              0x22000000 + (p0offset+dir)*32 
++ led2bit*4
+   32 00000000 233002B4 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                       led2pin equ              0x22000000 + (p0offset+pin)*32 
++ led2bit*4
+   33 00000000 23300334 
+                       led2set equ              0x22000000 + (p0offset+set)*32 
++ led2bit*4
+   34 00000000 233003B4 
+                       led2clr equ              0x22000000 + (p0offset+clr)*32 
++ led2bit*4
+   35 00000000         
+   36 00000000 0000000D 
+                       led3bit equ              13
+   37 00000000 23300434 
+                       led3dir equ              0x22000000 + (p1offset+dir)*32 
++ led2bit*4
+   38 00000000 233006B4 
+                       led3pin equ              0x22000000 + (p1offset+pin)*32 
++ led2bit*4
+   39 00000000 23300734 
+                       led3set equ              0x22000000 + (p1offset+set)*32 
++ led2bit*4
+   40 00000000 233007B4 
+                       led3clr equ              0x22000000 + (p1offset+clr)*32 
++ led2bit*4
+   41 00000000         
+   42 00000000 00000013 
+                       led4bit equ              19
+   43 00000000 2330084C 
+                       led4dir equ              0x22000000 + (p2offset+dir)*32 
++ led4bit*4
+   44 00000000 23300ACC 
+                       led4pin equ              0x22000000 + (p2offset+pin)*32 
++ led4bit*4
+   45 00000000 23300B4C 
+                       led4set equ              0x22000000 + (p2offset+set)*32 
++ led4bit*4
+   46 00000000 23300BCC 
+                       led4clr equ              0x22000000 + (p2offset+clr)*32 
++ led4bit*4
+   47 00000000         
+   48 00000000         __main  function
+   49 00000000 F7FF FFFE       bl               initialise
+   50 00000004         blink
+   51 00000004 F7FF FFFE       bl               led1on
+   52 00000008 F7FF FFFE       bl               led2off
+   53 0000000C F7FF FFFE       bl               led3off
+   54 00000010 F7FF FFFE       bl               led4off
+   55 00000014 BF00            nop
+   56 00000016 F7FF FFFE       bl               led1off
+   57 0000001A F7FF FFFE       bl               led2on
+   58 0000001E F7FF FFFE       bl               led3off
+   59 00000022 F7FF FFFE       bl               led4off
+   60 00000026 BF00            nop
+   61 00000028 F7FF FFFE       bl               led1off
+   62 0000002C F7FF FFFE       bl               led2off
+   63 00000030 F7FF FFFE       bl               led3on
+   64 00000034 F7FF FFFE       bl               led4off
+   65 00000038 BF00            nop
+   66 0000003A F7FF FFFE       bl               led1off
+   67 0000003E F7FF FFFE       bl               led2off
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   68 00000042 F7FF FFFE       bl               led3off
+   69 00000046 F7FF FFFE       bl               led4on
+   70 0000004A         
+   71 0000004A E7DB            b                blink
+   72 0000004C                 endfunc
+   73 0000004C         ; Start code here
+   74 0000004C         
+   75 0000004C         initialise
+                               function
+   76 0000004C B403            push             {r0,r1}
+   77 0000004E F04F 0001       mov              r0, #1
+   78 00000052 4921            ldr              r1,=led1dir ; pseudo instructio
+                                                            n
+   79 00000054 6008            str              r0,[r1]     ; write 1 for outpu
+                                                            t in dir bit
+   80 00000056 4921            ldr              r1,=led2dir
+   81 00000058 6008            str              r0,[r1]
+   82 0000005A 4921            ldr              r1,=led3dir
+   83 0000005C 6008            str              r0,[r1]
+   84 0000005E 4921            ldr              r1,=led4dir
+   85 00000060 6008            str              r0,[r1]
+   86 00000062 BC03            pop              {r0,r1}
+   87 00000064 4770            bx               lr
+   88 00000066                 endfunc
+   89 00000066         
+   90 00000066         
+   91 00000066         
+   92 00000066         led1on  function
+   93 00000066 B403            push             {r0,r1}
+   94 00000068 481F            ldr              r0,=led1clr
+   95 0000006A F04F 0101       mov              r1, #1
+   96 0000006E 6001            str              r1, [r0]
+   97 00000070 BC03            pop              {r0,r1}
+   98 00000072 4770            bx               lr
+   99 00000074                 endfunc
+  100 00000074         led1off function
+  101 00000074 B403            push             {r0,r1}
+  102 00000076 481D            ldr              r0,=led1set
+  103 00000078 F04F 0101       mov              r1, #1
+  104 0000007C 6001            str              r1, [r0]
+  105 0000007E BC03            pop              {r0,r1}
+  106 00000080 4770            bx               lr
+  107 00000082                 endfunc
+  108 00000082         
+  109 00000082         led2on  function
+  110 00000082 B403            push             {r0,r1}
+  111 00000084 481A            ldr              r0,=led2clr
+  112 00000086 F04F 0101       mov              r1, #1
+  113 0000008A 6001            str              r1, [r0]
+  114 0000008C BC03            pop              {r0,r1}
+  115 0000008E 4770            bx               lr
+  116 00000090                 endfunc
+  117 00000090         led2off function
+  118 00000090 B403            push             {r0,r1}
+  119 00000092 4818            ldr              r0,=led2set
+  120 00000094 F04F 0101       mov              r1, #1
+  121 00000098 6001            str              r1, [r0]
+  122 0000009A BC03            pop              {r0,r1}
+  123 0000009C 4770            bx               lr
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  124 0000009E                 endfunc
+  125 0000009E         
+  126 0000009E         led3on  function
+  127 0000009E B403            push             {r0,r1}
+  128 000000A0 4815            ldr              r0,=led3set
+  129 000000A2 F04F 0101       mov              r1, #1
+  130 000000A6 6001            str              r1, [r0]
+  131 000000A8 BC03            pop              {r0,r1}
+  132 000000AA 4770            bx               lr
+  133 000000AC                 endfunc
+  134 000000AC         led3off function
+  135 000000AC B403            push             {r0,r1}
+  136 000000AE 4813            ldr              r0,=led3clr
+  137 000000B0 F04F 0101       mov              r1, #1
+  138 000000B4 6001            str              r1, [r0]
+  139 000000B6 BC03            pop              {r0,r1}
+  140 000000B8 4770            bx               lr
+  141 000000BA                 endfunc
+  142 000000BA         
+  143 000000BA         led4on  function
+  144 000000BA B403            push             {r0,r1}
+  145 000000BC 4810            ldr              r0,=led4set
+  146 000000BE F04F 0101       mov              r1, #1
+  147 000000C2 6001            str              r1, [r0]
+  148 000000C4 BC03            pop              {r0,r1}
+  149 000000C6 4770            bx               lr
+  150 000000C8                 endfunc
+  151 000000C8         led4off function
+  152 000000C8 B403            push             {r0,r1}
+  153 000000CA 480E            ldr              r0,=led4clr
+  154 000000CC F04F 0101       mov              r1, #1
+  155 000000D0 6001            str              r1, [r0]
+  156 000000D2 BC03            pop              {r0,r1}
+  157 000000D4 4770            bx               lr
+  158 000000D6                 endfunc
+  159 000000D6         
+  160 000000D6                 end
+              00 00 23300448 
+              23300034 
+              23300434 
+              2330084C 
+              233007C8 
+              23300748 
+              233003B4 
+              23300334 
+              23300734 
+              233007B4 
+              23300B4C 
+              23300BCC 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\blinky.d -o.\objects\blinky.o -ID:\Users\Alun\Documen
+ts\GitHub\arm-assembler\RTE -ID:\Users\Alun\Documents\GitHub\arm-assembler\RTE\
+Device\LPC4088FET208 -Id:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta4\CMSIS\Include 
+-Id:\Keil_v5\ARM\PACK\Keil\LPC4000_DFP\2.0.0\Device\Include --predefine="__UVIS
+ION_VERSION SETA 520" --predefine="_RTE_ SETA 1" --predefine="CORE_M4 SETA 1" -
+-list=.\listings\blinky.lst blinky.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 3 in file blinky.s
+   Uses
+      None
+Comment: .text unused
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 48 in file blinky.s
+   Uses
+      At line 4 in file blinky.s
+Comment: __main used once
+blink 00000004
+
+Symbol: blink
+   Definitions
+      At line 50 in file blinky.s
+   Uses
+      At line 71 in file blinky.s
+Comment: blink used once
+initialise 0000004C
+
+Symbol: initialise
+   Definitions
+      At line 75 in file blinky.s
+   Uses
+      At line 49 in file blinky.s
+Comment: initialise used once
+led1off 00000074
+
+Symbol: led1off
+   Definitions
+      At line 100 in file blinky.s
+   Uses
+      At line 56 in file blinky.s
+      At line 61 in file blinky.s
+      At line 66 in file blinky.s
+
+led1on 00000066
+
+Symbol: led1on
+   Definitions
+      At line 92 in file blinky.s
+   Uses
+      At line 51 in file blinky.s
+Comment: led1on used once
+led2off 00000090
+
+Symbol: led2off
+   Definitions
+      At line 117 in file blinky.s
+   Uses
+      At line 52 in file blinky.s
+      At line 62 in file blinky.s
+      At line 67 in file blinky.s
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+
+led2on 00000082
+
+Symbol: led2on
+   Definitions
+      At line 109 in file blinky.s
+   Uses
+      At line 57 in file blinky.s
+Comment: led2on used once
+led3off 000000AC
+
+Symbol: led3off
+   Definitions
+      At line 134 in file blinky.s
+   Uses
+      At line 53 in file blinky.s
+      At line 58 in file blinky.s
+      At line 68 in file blinky.s
+
+led3on 0000009E
+
+Symbol: led3on
+   Definitions
+      At line 126 in file blinky.s
+   Uses
+      At line 63 in file blinky.s
+Comment: led3on used once
+led4off 000000C8
+
+Symbol: led4off
+   Definitions
+      At line 151 in file blinky.s
+   Uses
+      At line 54 in file blinky.s
+      At line 59 in file blinky.s
+      At line 64 in file blinky.s
+
+led4on 000000BA
+
+Symbol: led4on
+   Definitions
+      At line 143 in file blinky.s
+   Uses
+      At line 69 in file blinky.s
+Comment: led4on used once
+12 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+clr 0000001C
+
+Symbol: clr
+   Definitions
+      At line 12 in file blinky.s
+   Uses
+      At line 28 in file blinky.s
+      At line 34 in file blinky.s
+      At line 40 in file blinky.s
+      At line 46 in file blinky.s
+
+dir 00000000
+
+Symbol: dir
+   Definitions
+      At line 8 in file blinky.s
+   Uses
+      At line 25 in file blinky.s
+      At line 31 in file blinky.s
+      At line 37 in file blinky.s
+      At line 43 in file blinky.s
+
+led1bit 00000012
+
+Symbol: led1bit
+   Definitions
+      At line 24 in file blinky.s
+   Uses
+      At line 25 in file blinky.s
+      At line 26 in file blinky.s
+      At line 27 in file blinky.s
+      At line 28 in file blinky.s
+
+led1clr 233007C8
+
+Symbol: led1clr
+   Definitions
+      At line 28 in file blinky.s
+   Uses
+      At line 94 in file blinky.s
+Comment: led1clr used once
+led1dir 23300448
+
+Symbol: led1dir
+   Definitions
+      At line 25 in file blinky.s
+   Uses
+      At line 78 in file blinky.s
+Comment: led1dir used once
+led1pin 233006C8
+
+Symbol: led1pin
+   Definitions
+      At line 26 in file blinky.s
+   Uses
+      None
+Comment: led1pin unused
+led1set 23300748
+
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Absolute symbols
+
+Symbol: led1set
+   Definitions
+      At line 27 in file blinky.s
+   Uses
+      At line 102 in file blinky.s
+Comment: led1set used once
+led2bit 0000000D
+
+Symbol: led2bit
+   Definitions
+      At line 30 in file blinky.s
+   Uses
+      At line 31 in file blinky.s
+      At line 32 in file blinky.s
+      At line 33 in file blinky.s
+      At line 34 in file blinky.s
+      At line 37 in file blinky.s
+      At line 38 in file blinky.s
+      At line 39 in file blinky.s
+      At line 40 in file blinky.s
+
+led2clr 233003B4
+
+Symbol: led2clr
+   Definitions
+      At line 34 in file blinky.s
+   Uses
+      At line 111 in file blinky.s
+Comment: led2clr used once
+led2dir 23300034
+
+Symbol: led2dir
+   Definitions
+      At line 31 in file blinky.s
+   Uses
+      At line 80 in file blinky.s
+Comment: led2dir used once
+led2pin 233002B4
+
+Symbol: led2pin
+   Definitions
+      At line 32 in file blinky.s
+   Uses
+      None
+Comment: led2pin unused
+led2set 23300334
+
+Symbol: led2set
+   Definitions
+      At line 33 in file blinky.s
+   Uses
+      At line 119 in file blinky.s
+Comment: led2set used once
+led3bit 0000000D
+
+Symbol: led3bit
+   Definitions
+      At line 36 in file blinky.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Absolute symbols
+
+      None
+Comment: led3bit unused
+led3clr 233007B4
+
+Symbol: led3clr
+   Definitions
+      At line 40 in file blinky.s
+   Uses
+      At line 136 in file blinky.s
+Comment: led3clr used once
+led3dir 23300434
+
+Symbol: led3dir
+   Definitions
+      At line 37 in file blinky.s
+   Uses
+      At line 82 in file blinky.s
+Comment: led3dir used once
+led3pin 233006B4
+
+Symbol: led3pin
+   Definitions
+      At line 38 in file blinky.s
+   Uses
+      None
+Comment: led3pin unused
+led3set 23300734
+
+Symbol: led3set
+   Definitions
+      At line 39 in file blinky.s
+   Uses
+      At line 128 in file blinky.s
+Comment: led3set used once
+led4bit 00000013
+
+Symbol: led4bit
+   Definitions
+      At line 42 in file blinky.s
+   Uses
+      At line 43 in file blinky.s
+      At line 44 in file blinky.s
+      At line 45 in file blinky.s
+      At line 46 in file blinky.s
+
+led4clr 23300BCC
+
+Symbol: led4clr
+   Definitions
+      At line 46 in file blinky.s
+   Uses
+      At line 153 in file blinky.s
+Comment: led4clr used once
+led4dir 2330084C
+
+Symbol: led4dir
+   Definitions
+      At line 43 in file blinky.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 4 Alphabetic symbol ordering
+Absolute symbols
+
+      At line 84 in file blinky.s
+Comment: led4dir used once
+led4pin 23300ACC
+
+Symbol: led4pin
+   Definitions
+      At line 44 in file blinky.s
+   Uses
+      None
+Comment: led4pin unused
+led4set 23300B4C
+
+Symbol: led4set
+   Definitions
+      At line 45 in file blinky.s
+   Uses
+      At line 145 in file blinky.s
+Comment: led4set used once
+mask 00000010
+
+Symbol: mask
+   Definitions
+      At line 9 in file blinky.s
+   Uses
+      None
+Comment: mask unused
+p0offset 00098000
+
+Symbol: p0offset
+   Definitions
+      At line 20 in file blinky.s
+   Uses
+      At line 31 in file blinky.s
+      At line 32 in file blinky.s
+      At line 33 in file blinky.s
+      At line 34 in file blinky.s
+
+p1offset 00098020
+
+Symbol: p1offset
+   Definitions
+      At line 21 in file blinky.s
+   Uses
+      At line 25 in file blinky.s
+      At line 26 in file blinky.s
+      At line 27 in file blinky.s
+      At line 28 in file blinky.s
+      At line 37 in file blinky.s
+      At line 38 in file blinky.s
+      At line 39 in file blinky.s
+      At line 40 in file blinky.s
+
+p2offset 00098040
+
+Symbol: p2offset
+   Definitions
+      At line 22 in file blinky.s
+   Uses
+      At line 43 in file blinky.s
+
+
+
+ARM Macro Assembler    Page 5 Alphabetic symbol ordering
+Absolute symbols
+
+      At line 44 in file blinky.s
+      At line 45 in file blinky.s
+      At line 46 in file blinky.s
+
+pin 00000014
+
+Symbol: pin
+   Definitions
+      At line 10 in file blinky.s
+   Uses
+      At line 26 in file blinky.s
+      At line 32 in file blinky.s
+      At line 38 in file blinky.s
+      At line 44 in file blinky.s
+
+set 00000018
+
+Symbol: set
+   Definitions
+      At line 11 in file blinky.s
+   Uses
+      At line 27 in file blinky.s
+      At line 33 in file blinky.s
+      At line 39 in file blinky.s
+      At line 45 in file blinky.s
+
+28 symbols
+376 symbols in table
