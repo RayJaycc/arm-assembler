@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\assembler.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\assembler.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Thu Feb 23 11:08:10 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Thu Feb 23 15:14:08 2017
 <BR><P>
 <H3>Maximum Stack Usage =         32 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -12,7 +12,7 @@ SystemInit &rArr; fpu_init
 <H3>
 Functions with no stack information
 </H3><UL>
- <LI><a href="#[42]">__user_initial_stackheap</a>
+ <LI><a href="#[44]">__user_initial_stackheap</a>
 </UL>
 </UL>
 <P>
@@ -71,7 +71,7 @@ Function Pointers
  <LI><a href="#[6]">SVC_Handler</a> from startup_lpc407x_8x_177x_8x.o(.text) referenced from startup_lpc407x_8x_177x_8x.o(RESET)
  <LI><a href="#[9]">SysTick_Handler</a> from startup_lpc407x_8x_177x_8x.o(.text) referenced from startup_lpc407x_8x_177x_8x.o(RESET)
  <LI><a href="#[32]">SystemInit</a> from system_lpc407x_8x_177x_8x.o(i.SystemInit) referenced from startup_lpc407x_8x_177x_8x.o(.text)
- <LI><a href="#[b]">TIMER0_IRQHandler</a> from startup_lpc407x_8x_177x_8x.o(.text) referenced from startup_lpc407x_8x_177x_8x.o(RESET)
+ <LI><a href="#[b]">TIMER0_IRQHandler</a> from blinky.o(.text) referenced from startup_lpc407x_8x_177x_8x.o(RESET)
  <LI><a href="#[c]">TIMER1_IRQHandler</a> from startup_lpc407x_8x_177x_8x.o(.text) referenced from startup_lpc407x_8x_177x_8x.o(RESET)
  <LI><a href="#[d]">TIMER2_IRQHandler</a> from startup_lpc407x_8x_177x_8x.o(.text) referenced from startup_lpc407x_8x_177x_8x.o(RESET)
  <LI><a href="#[e]">TIMER3_IRQHandler</a> from startup_lpc407x_8x_177x_8x.o(.text) referenced from startup_lpc407x_8x_177x_8x.o(RESET)
@@ -90,18 +90,24 @@ Function Pointers
 <H3>
 Global Symbols
 </H3>
-<P><STRONG><a name="[34]"></a>__main</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, blinky.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led4off
-<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led4on
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led3off
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led3on
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led2off
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led2on
-<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led1off
-<LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led1on
+<P><STRONG><a name="[34]"></a>__main</STRONG> (Thumb, 64 bytes, Stack size 0 bytes, blinky.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer0init
+<LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led4off
+<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led4on
+<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led3off
+<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led3on
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led2off
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led2on
 <LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initialise
 </UL>
 
+<P><STRONG><a name="[b]"></a>TIMER0_IRQHandler</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, blinky.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led1state
+<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led1off
+<LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led1on
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> startup_lpc407x_8x_177x_8x.o(RESET)
+</UL>
 <P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, startup_lpc407x_8x_177x_8x.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc407x_8x_177x_8x.o(RESET)
 </UL>
@@ -256,9 +262,6 @@ Global Symbols
 <P><STRONG><a name="[2d]"></a>SSP2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_lpc407x_8x_177x_8x.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc407x_8x_177x_8x.o(RESET)
 </UL>
-<P><STRONG><a name="[b]"></a>TIMER0_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_lpc407x_8x_177x_8x.o(.text))
-<BR>[Address Reference Count : 1]<UL><LI> startup_lpc407x_8x_177x_8x.o(RESET)
-</UL>
 <P><STRONG><a name="[c]"></a>TIMER1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_lpc407x_8x_177x_8x.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc407x_8x_177x_8x.o(RESET)
 </UL>
@@ -292,21 +295,15 @@ Global Symbols
 <P><STRONG><a name="[a]"></a>WDT_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_lpc407x_8x_177x_8x.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc407x_8x_177x_8x.o(RESET)
 </UL>
-<P><STRONG><a name="[42]"></a>__user_initial_stackheap</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, startup_lpc407x_8x_177x_8x.o(.text), UNUSED)
+<P><STRONG><a name="[44]"></a>__user_initial_stackheap</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, startup_lpc407x_8x_177x_8x.o(.text), UNUSED)
 
-<P><STRONG><a name="[43]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[45]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
-<P><STRONG><a name="[44]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[46]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
-<P><STRONG><a name="[45]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[47]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
-<P><STRONG><a name="[3e]"></a>fpu_init</STRONG> (Thumb, 62 bytes, Stack size 24 bytes, system_lpc407x_8x_177x_8x.o(i.fpu_init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = fpu_init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
-</UL>
-
-<P><STRONG><a name="[3f]"></a>SystemCoreClockUpdate</STRONG> (Thumb, 696 bytes, Stack size 12 bytes, system_lpc407x_8x_177x_8x.o(i.SystemCoreClockUpdate))
+<P><STRONG><a name="[41]"></a>SystemCoreClockUpdate</STRONG> (Thumb, 696 bytes, Stack size 12 bytes, system_lpc407x_8x_177x_8x.o(i.SystemCoreClockUpdate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = SystemCoreClockUpdate
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
@@ -315,16 +312,22 @@ Global Symbols
 <P><STRONG><a name="[32]"></a>SystemInit</STRONG> (Thumb, 224 bytes, Stack size 8 bytes, system_lpc407x_8x_177x_8x.o(i.SystemInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = SystemInit &rArr; fpu_init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fpu_init
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit_ExtMemCtl
-<LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
+<BR>[Calls]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fpu_init
+<LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit_ExtMemCtl
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc407x_8x_177x_8x.o(.text)
 </UL>
-<P><STRONG><a name="[40]"></a>SystemInit_ExtMemCtl</STRONG> (Thumb, 468 bytes, Stack size 8 bytes, system_lpc407x_8x_177x_8x.o(i.SystemInit_ExtMemCtl))
+<P><STRONG><a name="[42]"></a>SystemInit_ExtMemCtl</STRONG> (Thumb, 468 bytes, Stack size 8 bytes, system_lpc407x_8x_177x_8x.o(i.SystemInit_ExtMemCtl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SystemInit_ExtMemCtl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DelayMs
+<BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_DelayMs
+</UL>
+<BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
+</UL>
+
+<P><STRONG><a name="[40]"></a>fpu_init</STRONG> (Thumb, 62 bytes, Stack size 24 bytes, system_lpc407x_8x_177x_8x.o(i.fpu_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = fpu_init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
 </UL>
@@ -337,39 +340,47 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[36]"></a>led1on</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
 </UL>
 
 <P><STRONG><a name="[37]"></a>led1off</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
+</UL>
+
+<P><STRONG><a name="[38]"></a>led1state</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, blinky.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
+</UL>
+
+<P><STRONG><a name="[39]"></a>led2on</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[38]"></a>led2on</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
+<P><STRONG><a name="[3a]"></a>led2off</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[39]"></a>led2off</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
+<P><STRONG><a name="[3b]"></a>led3on</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[3a]"></a>led3on</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
+<P><STRONG><a name="[3c]"></a>led3off</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[3b]"></a>led3off</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
+<P><STRONG><a name="[3d]"></a>led4on</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[3c]"></a>led4on</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
+<P><STRONG><a name="[3e]"></a>led4off</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[3d]"></a>led4off</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, blinky.o(.text))
+<P><STRONG><a name="[3f]"></a>timer0init</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, blinky.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
-<P><STRONG><a name="[41]"></a>_DelayMs</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, system_lpc407x_8x_177x_8x.o(i._DelayMs))
-<BR><BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit_ExtMemCtl
+<P><STRONG><a name="[43]"></a>_DelayMs</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, system_lpc407x_8x_177x_8x.o(i._DelayMs))
+<BR><BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit_ExtMemCtl
 </UL>
 <P>
 <H3>
