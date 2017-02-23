@@ -2,6 +2,7 @@
                   ; 8 byte stack alignment
         area |.text|, code, readonly ; Start of CODE area
         export __main
+        export TIMER0_IRQHandler
         entry
 
 ; Set up symbols with base register and offsets
@@ -47,23 +48,20 @@ led4clr equ 0x22000000 + (p2offset+clr)*32 + led4bit*4
 
 __main  function
         bl initialise
+        bl timer0init
 blink
-        bl led1on
         bl led2off
         bl led3off
         bl led4off
         nop
-        bl led1off
         bl led2on
         bl led3off
         bl led4off
         nop
-        bl led1off
         bl led2off
         bl led3on
         bl led4off
         nop
-        bl led1off
         bl led2off
         bl led3off
         bl led4on
@@ -103,6 +101,13 @@ led1off function
     mov r1, #1
     str r1, [r0]
     pop {r0,r1}
+    bx lr
+    endfunc
+led1state function
+    push {r1}
+    ldr r1,=led1pin
+    ldr r0,[r1]
+    pop {r1}
     bx lr
     endfunc
     
@@ -157,5 +162,53 @@ led4off function
     bx lr
     endfunc
     
+;; TIMER 0
+; register definitions
+timer0base equ 0x40004000
+ir   equ  0x000
+tcr  equ  0x004
+tc   equ  0x008
+pr   equ  0x00C
+mcr  equ  0x014
+mr0  equ  0x018
+ctcr equ  0x070
+
+mr0int equ 0x42000000 + (4000)*32
+
+iser equ  0xE000E100
+timer0init function
+    push {r0,r1}
+    ldr r0,=timer0base
+    mov r1, #0
+    str r1, [r0,#tcr]
+    str r1, [r0,#ctcr]
+    mov r1, #59999 ; 1ms tickrate
+    str r1, [r0,#pr]
+    mov r1, #1000
+    str r1, [r0,#mr0]
+    mov r1, #2_0011
+    str r1, [r0,#mcr]
+    mov r1, #1
+    str r1, [r0,#tcr]
+    ldr r0,=iser
+    ldr r1,[r0]
+    orr r1, #2_0010
+    str r1, [r0]
+    pop {r0,r1}
+    bx lr
+    endfunc
+    
+TIMER0_IRQHandler function
+    push {r0,r1,lr}
+    bl led1state
+    tst r0, #1
+    bleq led1off
+    blne led1on
+    mov r0, #1
+    ldr r1,=timer0base
+    str r0,[r1,#ir]
+    pop {r0,r1,lr}
+    bx lr
+        endfunc
     end
 
